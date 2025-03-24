@@ -7,6 +7,7 @@ class Orb {
   float bsize;
   float mass;
   color c;
+  float charge;
 
 
   Orb() {
@@ -18,6 +19,7 @@ class Orb {
      velocity = new PVector();
      acceleration = new PVector();
      setColor();
+     charge = 0; // neutral
   }
 
   Orb(float x, float y, float s, float m) {
