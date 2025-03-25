@@ -1,5 +1,10 @@
 class SimOne extends Simulation {
   
+  // GRAVITY SIM
+  
+  boolean[] toggles = new boolean[6];
+  String[] modes = {"Moving( )", "Bounce(b)", "Gravity(g)", "Drag(d)", "Earth-Gravity(e)","Spring(s)"};
+  
   Orb[] orbs;
   
   SimOne(int numNodes) {
@@ -8,7 +13,6 @@ class SimOne extends Simulation {
       orbs[i] = new Orb();
     }
   }
-  
   SimOne() {
     this(1);
   }

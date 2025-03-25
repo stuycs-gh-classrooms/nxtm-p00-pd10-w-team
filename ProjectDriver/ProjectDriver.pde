@@ -21,6 +21,7 @@ void draw() {
 
 public void displayMode(String[] modes,boolean[] toggles) {
   if (modes!=null&&toggles!=null) {
+    println("displaymode not null xd");
     textAlign(LEFT, TOP);
     textSize(20);
     noStroke();
@@ -42,6 +43,7 @@ public void displayMode(String[] modes,boolean[] toggles) {
 void keyPressed() {
   if (key=='1') {
     //println("test");
+    currentSim = new SimOne();
   }
   if (key=='2') {
     
