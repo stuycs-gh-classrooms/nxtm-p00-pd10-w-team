@@ -46,7 +46,7 @@ q = magnitude of the charge
   - Yes it requires a magnetic field, velocity, and charge constant. 
 
 - Does this force require any new information to be added to the `Orb` class? If so, what is it and what data type will you use?
-  - Magnitude of charge will need to be added. This is for the magnetism
+  - Magnitude of charge will need to be added. This is for the magnetism. We'll decide what data type it is later on.
 
 - Does this force interact with other `Orbs`, or is it applied based on the environment?
   - It interacts with other orbs as the magnetism is between one object and another.
