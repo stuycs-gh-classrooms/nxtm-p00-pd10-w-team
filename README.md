@@ -66,13 +66,13 @@ https://github.com/stuycs-gh-classrooms/nxtm-p00-pd09-e-m
 
 ### Simulation 1: Gravity
 Describe how you will attempt to simulate orbital motion.
-Utilize the gravity equation and implement it into the Orb or OrbNode
+Utilize the gravity equation and implement it into the Orb or OrbNode. 
 --- 
 
 ### Simulation 2: Spring
 Describe what your spring simulation will look like. Explain how it will be setup, and how it should behave while running.
 
-YOUR ANSWER HERE
+The spring simulation will depend on the length of the spring between the orb and orbnodes. This will affect the elongation or compression of the spring. If the spring is comrpessed or elongated, it will have a force bring it apart or together respectively.
 
 --- 
 
