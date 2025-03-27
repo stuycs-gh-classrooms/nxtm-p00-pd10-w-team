@@ -79,7 +79,7 @@ The spring simulation will depend on the length of the spring between the orb an
 ### Simulation 3: Drag
 Describe what your drag simulation will look like. Explain how it will be setup, and how it should behave while running.
 
-YOUR ANSWER HERE
+The drag simulation will look like
 
 --- 
 
