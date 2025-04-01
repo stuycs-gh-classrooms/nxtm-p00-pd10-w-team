@@ -4,7 +4,7 @@ final float MIN_SIZE = 2;
 final float MAX_MASS = 100;
 final float MIN_MASS = 10;
 final float EARTH_MASS = 1000;
-final float G_CONSTANT = 0.01;
+final float G_CONSTANT = 0.05;
 boolean[] toggles;
 //boolean[] toggles = new boolean[6];
 String[] modes;
@@ -85,15 +85,13 @@ void keyPressed() {
   }
   // toggle stuff in sim
   if (currentSim==1) {
-    if (key==' ') {
-      toggles[0] = !toggles[0]; // moving on/off
-    }
-    if (key=='b') {
-      toggles[1] = !toggles[1]; // bounce on/off
-    }
-    if (key=='g') {
-      toggles[2] = !toggles[2]; // gravity on/off
-    }
+    if (key==' ') {toggles[0] = !toggles[0];} // moving on/off
+    if (key=='b') {toggles[1] = !toggles[1];} // bounce on/off
+    if (key=='g') {toggles[2] = !toggles[2];} // gravity on/off
+    if (key=='r') {setup1();} // setup if r pressed
+  }//sim1
+  if (currentSim==2) {
+    if (key==' ') {toggles[0] = !toggles[0];} // moving on/off
   }
 }
 
@@ -103,7 +101,7 @@ void setup1() {
   String[] tempModes = {"Moving( )", "Bounce(b)", "Gravity(g)"};
   modes = tempModes;
   toggles=new boolean[tempModes.length];
-  orbs = new Orb[((int)random(5) + 2)];
+  orbs = new Orb[((int)random(5) + 4)];
   toggles[1] = true;
   toggles[2] = true;
   currentSim=1;
