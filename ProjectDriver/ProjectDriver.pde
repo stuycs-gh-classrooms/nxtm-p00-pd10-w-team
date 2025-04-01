@@ -132,6 +132,10 @@ void setup2() {
 
 void setup3() {
   currentSim=3;
+  front = null;
+  orbs = new Orb[(int)random(5)+4];
+  String[] tempModes = {"Moving( )","Bounce(b)","Drag(d)","Add new(=)","One less(-)"};
+  
 }
 
 void setup4() {
