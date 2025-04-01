@@ -166,14 +166,22 @@ class Orb {
   }
 
   PVector getMagneticForce(Orb other) {
-    float x1=0,x=0,y=0;
+    /*float x1=0,x=0,y=0;
     if (center!=other.center) {
       x1 = (1 * charge * other.charge) / (4*PI*pow(center.dist(other.center), 2));
-      x = (1 * charge * other.charge) / (4*PI*pow(abs(center.x-other.center.x), 2));
-      y = (1 * charge * other.charge) / (4*PI*pow(abs(center.y-other.center.y), 2));
+      x = (1 * charge * other.charge) / (4*PI*pow(center.x-other.center.x, 2));
+      y = (1 * charge * other.charge) / (4*PI*pow(center.y-other.center.y, 2));
     }
     println("x" + x);
     println("y" + y);
-    return new PVector(x, y);
+    return new PVector(x1, x1);*/
+    if (charge!=other.charge) {
+      return getGravity(other,G_CONSTANT);
+    } else {
+      
+    }
+    
+    
+    return new PVector();
   }
 }//Orb
