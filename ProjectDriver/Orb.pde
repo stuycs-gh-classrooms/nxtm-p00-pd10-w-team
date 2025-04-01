@@ -11,31 +11,38 @@ class Orb {
 
 
   Orb() {
-     bsize = random(10, MAX_SIZE);
-     float x = random(bsize/2, width-bsize/2);
-     float y = random(bsize/2, height-bsize/2);
-     center = new PVector(x, y);
-     mass = random(10, 100);
-     velocity = new PVector();
-     acceleration = new PVector();
-     setColor();
-     charge = 0; // neutral
+    bsize = random(10, MAX_SIZE);
+    float x = random(bsize/2, width-bsize/2);
+    float y = random(bsize/2, height-bsize/2);
+    center = new PVector(x, y);
+    mass = random(10, 100);
+    velocity = new PVector();
+    acceleration = new PVector();
+    setColor();
+    //charge = 0; // neutral
+    if (random(1)>0.5) {
+      // make it positive
+      charge = ABS_CHARGE;
+    } else {
+      // make it negative
+      charge = -ABS_CHARGE;
+    }
   }
 
   Orb(float x, float y, float s, float m) {
-     bsize = s;
-     mass = m;
-     center = new PVector(x, y);
-     velocity = new PVector();
-     acceleration = new PVector();
-     setColor();
-   }
-   
-   Orb(float x, float y) {
-     this();
-     center.x = x;
-     center.y = y;
-   }
+    bsize = s;
+    mass = m;
+    center = new PVector(x, y);
+    velocity = new PVector();
+    acceleration = new PVector();
+    setColor();
+  }
+
+  Orb(float x, float y) {
+    this();
+    center.x = x;
+    center.y = y;
+  }
 
   //movement behavior
   void move(boolean bounce) {
@@ -87,7 +94,7 @@ class Orb {
     return direction;
   }//getSpring
 
-  boolean yBounce(){
+  boolean yBounce() {
     if (center.y > height - bsize/2) {
       velocity.y *= -1;
       center.y = height - bsize/2;
@@ -106,8 +113,7 @@ class Orb {
       center.x = width - bsize/2;
       velocity.x *= -1;
       return true;
-    }
-    else if (center.x < bsize/2) {
+    } else if (center.x < bsize/2) {
       center.x = bsize/2;
       velocity.x *= -1;
       return true;
@@ -117,7 +123,7 @@ class Orb {
 
   boolean collisionCheck(Orb other) {
     return ( this.center.dist(other.center)
-             <= (this.bsize/2 + other.bsize/2) );
+      <= (this.bsize/2 + other.bsize/2) );
   }//collisionCheck
 
   boolean isSelected(float x, float y) {
@@ -139,10 +145,35 @@ class Orb {
     fill(0);
     //text(mass, center.x, center.y);
   }//display
-  
-  // earth gravity (downward)
-  PVector getEarthGravity(float earthConstant) {
-    return new PVector(0,earthConstant);
+
+  void showMagneticSigns() {
+    strokeWeight(3);
+    if (charge>0) {
+      // positive charge
+      stroke(0, 255, 0);
+      line(center.x, center.y-(bsize/2), center.x, center.y+(bsize/2));
+      line(center.x-(bsize/2), center.y, center.x+(bsize/2), center.y);
+    } else if (charge<0) {
+      // negative charge
+      stroke(255, 0, 0);
+      line(center.x-(bsize/2), center.y, center.x+(bsize/2), center.y);
+    }
   }
 
+  // earth gravity (downward)
+  PVector getEarthGravity(float earthConstant) {
+    return new PVector(0, earthConstant);
+  }
+
+  PVector getMagneticForce(Orb other) {
+    float x1=0,x=0,y=0;
+    if (center!=other.center) {
+      x1 = (1 * charge * other.charge) / (4*PI*pow(center.dist(other.center), 2));
+      x = (1 * charge * other.charge) / (4*PI*pow(abs(center.x-other.center.x), 2));
+      y = (1 * charge * other.charge) / (4*PI*pow(abs(center.y-other.center.y), 2));
+    }
+    println("x" + x);
+    println("y" + y);
+    return new PVector(x, y);
+  }
 }//Orb

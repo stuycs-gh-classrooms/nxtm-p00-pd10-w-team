@@ -10,6 +10,7 @@ final int SPRING_LENGTH = 20;
 final float DRAG_CONSTANT_1 = 1;
 final float DRAG_CONSTANT_2 = DRAG_CONSTANT_1*5;
 final float EARTH_GRAVITY_CONSTANT = 10;
+final float ABS_CHARGE = 50;
 boolean[] toggles;
 String[] modes;
 int currentSim;
@@ -113,7 +114,13 @@ void keyPressed() {
     if (key=='g') {toggles[3]=!toggles[3];} // earth gravity
   }
   if (currentSim==4) {
-    
+    if (key=='r') {boolean[] temp=toggles;setup4();toggles=temp;}
+    if (key==' ') {toggles[0] = !toggles[0];} // moving
+    if (key=='=') {addNewOrb();} // add new orb
+    if (key=='-') {removeOrb();} // remove orb
+    if (key=='b') {toggles[1]=!toggles[1];} // bounces
+    if (key=='m') {toggles[2]=!toggles[2];} // magnetics
+    if (key=='g') {toggles[3]=!toggles[3];} // earth gravity
   }
 }
 
@@ -163,6 +170,15 @@ void setup3() {
 
 void setup4() {
   currentSim=4;
+  front = null;
+  orbs = new Orb[(int)random(5)+4];
+  String[] tempModes = {"Moving( )","Bounce(b)","Magnetics(m)","Gravity(g)","Add new(=)","One less(-)"};
+  modes = tempModes;
+  toggles = new boolean[tempModes.length];
+  for (int i=0;i<orbs.length;i++) {orbs[i]=new Orb();}
+  toggles[1] = true;
+  toggles[2] = true;
+  toggles[3] = true;
 }
 
 void setup5() {
@@ -242,7 +258,27 @@ void draw3() {
 }
 
 void draw4() {
-  
+  // loop through
+  for (int i=0;i<orbs.length;i++) {
+    // if moving
+    if (toggles[0]) {
+      // magneticism
+      if (toggles[2]) {
+        for (int i2=0;i2<orbs.length;i2++) {
+          if (i!=i2) {
+            orbs[i].applyForce(orbs[i].getMagneticForce(orbs[i2]));
+          }
+        }
+      }
+      // earth gravity
+      if (toggles[3]) {
+        orbs[i].applyForce(orbs[i].getEarthGravity(EARTH_GRAVITY_CONSTANT));
+      }
+      orbs[i].move(toggles[1]);
+    }    
+    orbs[i].display();
+    orbs[i].showMagneticSigns();
+  }
 }
 
 void draw5() {
