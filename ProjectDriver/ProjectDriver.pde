@@ -7,10 +7,11 @@ final float EARTH_MASS = 1000;
 final float G_CONSTANT = 0.05; // attraction constant
 final float S_CONSTANT = 0.01; // spring constant
 final int SPRING_LENGTH = 20;
+final float DRAG_CONSTANT_1 = 1;
+final float DRAG_CONSTANT_2 = DRAG_CONSTANT_1*5;
+final float EARTH_GRAVITY_CONSTANT = 10;
 boolean[] toggles;
-//boolean[] toggles = new boolean[6];
 String[] modes;
-//String[] modes = {"Moving( )", "Bounce(b)", "Gravity(g)", "Drag(d)", "Earth-Gravity(e)","Spring(s)"};
 int currentSim;
 // orbs
 Orb[] orbs;
@@ -89,8 +90,10 @@ void keyPressed() {
   if (currentSim==1) {
     if (key==' ') {toggles[0] = !toggles[0];} // moving on/off
     if (key=='b') {toggles[1] = !toggles[1];} // bounce on/off
-    if (key=='g') {toggles[2] = !toggles[2];} // gravity on/off
-    if (key=='r') {setup1();} // setup if r pressed
+    if (key=='a') {toggles[2] = !toggles[2];} // attraction on/off
+    if (key=='r') {boolean[] temp=toggles;setup1();toggles=temp;} // setup if r pressed
+    if (key=='=') {addNewOrb();}
+    if (key=='-') {removeOrb();}
   }//sim1
   if (currentSim==2) {
     if (key==' ') {toggles[0] = !toggles[0];} // moving on/off
@@ -98,13 +101,26 @@ void keyPressed() {
     if (key=='b') {toggles[1] = !toggles[1];} // bounce
     if (key=='s') {toggles[2] = !toggles[2];} // springs
     if (key=='-') {getRidOfOrbNode();} // get rid of orb node
+    if (key=='r') {boolean[] temp=toggles;setup2();toggles=temp;} // reset
+  }
+  if (currentSim==3) {
+    if (key=='r') {boolean[] temp=toggles;setup3();toggles=temp;}
+    if (key==' ') {toggles[0] = !toggles[0];} // moving
+    if (key=='=') {addNewOrb();} // add new orb
+    if (key=='-') {removeOrb();} // remove orb
+    if (key=='b') {toggles[1]=!toggles[1];} // bounces
+    if (key=='d') {toggles[2]=!toggles[2];} // drag
+    if (key=='g') {toggles[3]=!toggles[3];} // earth gravity
+  }
+  if (currentSim==4) {
+    
   }
 }
 
 // setups
 void setup1() {
   front = null;
-  String[] tempModes = {"Moving( )", "Bounce(b)", "Gravity(g)"};
+  String[] tempModes = {"Moving( )", "Bounce(b)", "Attraction(a)","Add one(=)","One less(-)"};
   modes = tempModes;
   toggles=new boolean[tempModes.length];
   orbs = new Orb[((int)random(5) + 4)];
@@ -134,8 +150,15 @@ void setup3() {
   currentSim=3;
   front = null;
   orbs = new Orb[(int)random(5)+4];
-  String[] tempModes = {"Moving( )","Bounce(b)","Drag(d)","Add new(=)","One less(-)"};
-  
+  String[] tempModes = {"Moving( )","Bounce(b)","Drag(d)","Gravity(g)","Add new(=)","One less(-)"};
+  modes = tempModes;
+  toggles = new boolean[tempModes.length];
+  for (int i=0;i<orbs.length;i++) {
+    orbs[i] = new Orb();
+  }
+  toggles[1] = true;
+  toggles[2] = true;
+  toggles[3] = true;
 }
 
 void setup4() {
@@ -187,7 +210,35 @@ void draw2() {
 }
 
 void draw3() {
-  
+  // draw drag areas if drag enabled
+  if (toggles[2]) {
+    fill(#1efac7);
+    rect(0,height/2,width,height/4);
+    fill(#f7a19e);
+    rect(0,3*height/4,width,height/4);
+  }
+  // loop through
+  for (int i=0;i<orbs.length;i++) {
+    // if moving
+    if (toggles[0]) {
+      // drag
+      if (toggles[2]) {
+        if (orbs[i].center.y>(height/2)&&orbs[i].center.y<(3*height/4)) {
+          orbs[i].applyForce(orbs[i].getDragForce(DRAG_CONSTANT_1));
+        }
+        if (orbs[i].center.y>height*3/4&&orbs[i].center.y<height) {
+          orbs[i].applyForce(orbs[i].getDragForce(DRAG_CONSTANT_2));
+        }
+      }
+      // earth gravity
+      if (toggles[3]) {
+        orbs[i].applyForce(orbs[i].getEarthGravity(EARTH_GRAVITY_CONSTANT));
+      }
+      orbs[i].move(toggles[1]);
+    }
+    
+    orbs[i].display();
+  }
 }
 
 void draw4() {
@@ -208,5 +259,22 @@ void addNewOrbNode() {
 void getRidOfOrbNode() {
   if (front!=null && front.next!=null) {
     front = front.next;
+  }
+}
+
+void addNewOrb() {
+  if (orbs!=null) {
+    Orb[] temp = new Orb[orbs.length+1];
+    for (int i=0;i<orbs.length;i++) {temp[i] = orbs[i];}
+    temp[temp.length-1] = new Orb();
+    orbs = temp;
+  }
+}
+
+void removeOrb() {
+  if (orbs!=null&&orbs.length>1) {
+    Orb[] temp = new Orb[orbs.length-1];
+    for (int i=0;i<temp.length;i++) {temp[i] = orbs[i];}
+    orbs = temp;
   }
 }
