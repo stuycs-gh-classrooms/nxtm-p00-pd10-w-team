@@ -4,7 +4,9 @@ final float MIN_SIZE = 2;
 final float MAX_MASS = 100;
 final float MIN_MASS = 10;
 final float EARTH_MASS = 1000;
-final float G_CONSTANT = 0.05;
+final float G_CONSTANT = 0.05; // attraction constant
+final float S_CONSTANT = 0.01; // spring constant
+final int SPRING_LENGTH = 20;
 boolean[] toggles;
 //boolean[] toggles = new boolean[6];
 String[] modes;
@@ -92,6 +94,10 @@ void keyPressed() {
   }//sim1
   if (currentSim==2) {
     if (key==' ') {toggles[0] = !toggles[0];} // moving on/off
+    if (key=='=') {addNewOrbNode();} // add new orb node
+    if (key=='b') {toggles[1] = !toggles[1];} // bounce
+    if (key=='s') {toggles[2] = !toggles[2];} // springs
+    if (key=='-') {getRidOfOrbNode();} // get rid of orb node
   }
 }
 
@@ -113,11 +119,15 @@ void setup1() {
 
 void setup2() {
   orbs = null;
-  String[] tempModes = {"Moving( )","Bounce(b)"};
+  String[] tempModes = {"Moving( )","Bounce(b)","Springs(s)","Add new(=)","One less(-)"};
   modes = tempModes;
   toggles = new boolean[tempModes.length];
   currentSim=2;
   front = new OrbNode();
+  int tempNum = (int)random(5) + 4;
+  for (int i=0;i<tempNum;i++) {addNewOrbNode();}
+  toggles[1] = true;
+  toggles[2] = true;
 }
 
 void setup3() {
@@ -154,7 +164,22 @@ void draw1() {
 }
 
 void draw2() {
-  
+  OrbNode currentOrb = front;
+  while (currentOrb!=null) {
+    // moving/bounce
+    if (toggles[0]) {
+      if (toggles[2]) {
+        currentOrb.applySprings(SPRING_LENGTH,S_CONSTANT);
+      }
+      currentOrb.move(toggles[1]);
+    }
+    
+    // display
+    currentOrb.display();
+    if (toggles[2]) {currentOrb.display(SPRING_LENGTH);}
+    // next
+    currentOrb = currentOrb.next;
+  }
 }
 
 void draw3() {
@@ -174,4 +199,10 @@ void addNewOrbNode() {
   front = new OrbNode();
   xDNode.previous = front;
   front.next = xDNode;
+}
+
+void getRidOfOrbNode() {
+  if (front!=null && front.next!=null) {
+    front = front.next;
+  }
 }

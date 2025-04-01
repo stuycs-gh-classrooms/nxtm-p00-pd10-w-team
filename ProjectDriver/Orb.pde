@@ -139,5 +139,10 @@ class Orb {
     fill(0);
     //text(mass, center.x, center.y);
   }//display
+  
+  // earth gravity (downward)
+  PVector getEarthGravity(float earthConstant) {
+    return new PVector(0,earthConstant);
+  }
 
 }//Orb
