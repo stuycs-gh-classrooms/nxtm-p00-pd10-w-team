@@ -10,7 +10,7 @@ final int SPRING_LENGTH = 20;
 final float DRAG_CONSTANT_1 = 1;
 final float DRAG_CONSTANT_2 = DRAG_CONSTANT_1*5;
 final float EARTH_GRAVITY_CONSTANT = 10;
-final float ABS_CHARGE = 50;
+final float ABS_CHARGE = 100;
 boolean[] toggles;
 String[] modes;
 int currentSim;
