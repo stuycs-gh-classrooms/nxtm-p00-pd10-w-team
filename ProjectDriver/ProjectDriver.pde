@@ -127,8 +127,8 @@ void keyPressed() {
   if (currentSim==5) {
     if (key=='r') {boolean[] temp=toggles;setup5();toggles=temp;}
     if (key==' ') {toggles[0] = !toggles[0];} // moving
-    if (key=='=') {addNewOrb();} // add new orb
-    if (key=='-') {removeOrb();} // remove orb
+    if (key=='=') {addNewOrbNode();} // add new orb
+    if (key=='-') {getRidOfOrbNode();} // remove orb
     if (key=='b') {toggles[1]=!toggles[1];} // bounces
     if (key=='g') {toggles[5]=!toggles[5];} // earth gravity
     if (key=='d') {toggles[2] = !toggles[2];} // drag
@@ -200,14 +200,16 @@ void setup5() {
   int rA = (int)random(15) + 5;
   for (int i=0;i<rA;i++) {addNewOrbNode();}
   orbs = null;
-  sim5Earth = new FixedOrb();
-  String[] tempModes = {"Moving( )","Bounce(b)","Drag(d)","Attraction(a)","Springs(s)","Gravity(g)","Add new(=)","One less(-)"};
+  sim5Earth = new FixedOrb((float)width/2,(float)height/2,EARTH_MASS);
+  String[] tempModes = {"Moving( )","Bounce(b)","Drag(d)","Attraction(a)","Springs(s)","Gravity(g)","Collide(c)","Add new(=)","One less(-)"};
   modes = tempModes;
   toggles = new boolean[tempModes.length];
   toggles[1] = true; // bounce
   toggles[2] = true;
+  toggles[3] = true;
   toggles[4] = true;
   toggles[5] = true;
+  toggles[6] = true;
 }
 
 // draws
@@ -304,14 +306,66 @@ void draw4() {
         orbs[i].applyForce(orbs[i].getEarthGravity(EARTH_GRAVITY_CONSTANT));
       }
       orbs[i].move(toggles[1]);
-    }    
+    }
     orbs[i].display();
     orbs[i].showMagneticSigns();
   }
 }
 
 void draw5() {
-  
+  // draw drag areas if drag enabled
+  if (toggles[2]) {
+    fill(#1efac7);
+    rect(0,height/2,width,height/4);
+    fill(#f7a19e);
+    rect(0,3*height/4,width,height/4);
+  }
+  OrbNode currentOrb = front;
+  while (currentOrb!=null) {
+    if (toggles[0]) {
+      // drag
+      if (toggles[2]) {
+        if (currentOrb.center.y>height/2&&currentOrb.center.y<3*height/4) {
+          currentOrb.applyForce(currentOrb.getDragForce(DRAG_CONSTANT_1));
+        } else if (currentOrb.center.y>3*height/4&&currentOrb.center.y<height) {
+          currentOrb.applyForce(currentOrb.getDragForce(DRAG_CONSTANT_2));
+        }
+      }
+      // attraction
+      if (toggles[3]) {
+        currentOrb.applyForce(currentOrb.getGravity(sim5Earth,G_CONSTANT));
+        OrbNode n2 = front;
+        while (n2!=null) {
+          if (currentOrb!=n2) {
+            currentOrb.applyForce(currentOrb.getGravity(n2,G_CONSTANT));
+          }
+          n2 = n2.next;
+        }
+      }
+      // springs
+      if (toggles[4]) {
+        currentOrb.applySprings(SPRING_LENGTH,S_CONSTANT);
+      }
+      // gravity
+      if (toggles[5]) {
+        currentOrb.applyForce(currentOrb.getEarthGravity(EARTH_GRAVITY_CONSTANT));
+      }
+      // collide
+      if (toggles[6]) {
+        if (currentOrb.collisionCheck(sim5Earth)) {
+          
+        }
+      }
+      // move/bounce
+      currentOrb.move(toggles[1]);
+    }
+    // display
+    currentOrb.display();
+    if (toggles[4]) {currentOrb.display(SPRING_LENGTH);}
+    // transition to next
+    currentOrb = currentOrb.next;
+  }
+  sim5Earth.display();
 }
 
 void addNewOrbNode() {

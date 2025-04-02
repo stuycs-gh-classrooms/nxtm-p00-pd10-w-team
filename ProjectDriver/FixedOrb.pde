@@ -5,7 +5,6 @@ class FixedOrb extends Orb {
   }
   
   FixedOrb(float x, float y, float m) {
-    //this(x,y,random(MAX_SIZE) + MIN_SIZE,m);
     this(x,y,30,m);
   }
   
