@@ -182,4 +182,7 @@ class Orb {
       return new PVector(forceX,forceY);
     }
   }
+  
+  // plan to work on so less flying around
+  
 }//Orb
