@@ -171,14 +171,14 @@ void setup3() {
 void setup4() {
   currentSim=4;
   front = null;
-  orbs = new Orb[(int)random(5)+4];
+  orbs = new Orb[(int)random(5)+1];
   String[] tempModes = {"Moving( )","Bounce(b)","Magnetics(m)","Gravity(g)","Add new(=)","One less(-)"};
   modes = tempModes;
   toggles = new boolean[tempModes.length];
   for (int i=0;i<orbs.length;i++) {orbs[i]=new Orb();}
   toggles[1] = true;
   toggles[2] = true;
-  toggles[3] = true;
+  //toggles[3] = true;
 }
 
 void setup5() {
@@ -262,10 +262,14 @@ void draw4() {
   for (int i=0;i<orbs.length;i++) {
     // if moving
     if (toggles[0]) {
-      // magneticism
       if (toggles[2]) {
         for (int i2=0;i2<orbs.length;i2++) {
           if (i!=i2) {
+            // collision check
+            if (orbs[i].collisionCheck(orbs[i2])) {
+              orbs[i].velocity.mult(-1);
+            }
+            // magneticism
             orbs[i].applyForce(orbs[i].getMagneticForce(orbs[i2]));
           }
         }
