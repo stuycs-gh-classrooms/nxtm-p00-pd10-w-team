@@ -134,6 +134,7 @@ void keyPressed() {
     if (key=='d') {toggles[2] = !toggles[2];} // drag
     if (key=='a') {toggles[3] = !toggles[3];} // attraction
     if (key=='s') {toggles[4] = !toggles[4];} // springs
+    if (key=='c') {toggles[6] = !toggles[6];} // collisions
   }
 }
 
@@ -353,7 +354,14 @@ void draw5() {
       // collide
       if (toggles[6]) {
         if (currentOrb.collisionCheck(sim5Earth)) {
-          
+          currentOrb.velocity.mult(-1);
+        }
+        OrbNode n2 = front;
+        while (n2!=null) {
+          if (currentOrb!=n2&&currentOrb.collisionCheck(n2)) {
+            currentOrb.velocity.mult(-1);
+          }
+          n2 = n2.next;
         }
       }
       // move/bounce
