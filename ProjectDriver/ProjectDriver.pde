@@ -55,7 +55,7 @@ public void displayMode() {
   if (toggles!=null) {
     textAlign(LEFT, TOP);
     if (currentSim!=5) {textSize(20);}
-    else {textSize(12);}
+    else {textSize(11);}
     noStroke();
     int spacing = 85;
     int x = 0;
@@ -135,6 +135,7 @@ void keyPressed() {
     if (key=='a') {toggles[3] = !toggles[3];} // attraction
     if (key=='s') {toggles[4] = !toggles[4];} // springs
     if (key=='c') {toggles[6] = !toggles[6];} // collisions
+    if (key=='m') {toggles[7] = !toggles[7];} // magneticism
   }
 }
 
@@ -202,7 +203,7 @@ void setup5() {
   for (int i=0;i<rA;i++) {addNewOrbNode();}
   orbs = null;
   sim5Earth = new FixedOrb((float)width/2,(float)height/2,EARTH_MASS);
-  String[] tempModes = {"Moving( )","Bounce(b)","Drag(d)","Attraction(a)","Springs(s)","Gravity(g)","Collide(c)","Add new(=)","One less(-)"};
+  String[] tempModes = {"Moving( )","Bounce(b)","Drag(d)","Attraction(a)","Springs(s)","Gravity(g)","Collide(c)","Magneticisim(m)","Add new(=)","One less(-)"};
   modes = tempModes;
   toggles = new boolean[tempModes.length];
   toggles[1] = true; // bounce
@@ -351,6 +352,16 @@ void draw5() {
       if (toggles[5]) {
         currentOrb.applyForce(currentOrb.getEarthGravity(EARTH_GRAVITY_CONSTANT));
       }
+      // magnetiicism
+      if (toggles[7]) {
+        OrbNode n2 = front;
+        while (n2!=null) {
+          if (n2!=currentOrb) {
+            currentOrb.applyForce(currentOrb.getMagneticForce(n2));
+          }
+          n2=n2.next;
+        }
+      }
       // collide
       if (toggles[6]) {
         if (currentOrb.collisionCheck(sim5Earth)) {
@@ -370,6 +381,7 @@ void draw5() {
     // display
     currentOrb.display();
     if (toggles[4]) {currentOrb.display(SPRING_LENGTH);}
+    if (toggles[7]) {currentOrb.showMagneticSigns();}
     // transition to next
     currentOrb = currentOrb.next;
   }
