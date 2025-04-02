@@ -185,7 +185,7 @@ void setup3() {
 void setup4() {
   currentSim=4;
   front = null;
-  orbs = new Orb[(int)random(5)+1];
+  orbs = new Orb[(int)random(5)+2];
   String[] tempModes = {"Moving( )","Bounce(b)","Magnetics(m)","Gravity(g)","Add new(=)","One less(-)"};
   modes = tempModes;
   toggles = new boolean[tempModes.length];
