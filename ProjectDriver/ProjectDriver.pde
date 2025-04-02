@@ -17,6 +17,7 @@ int currentSim;
 // orbs
 Orb[] orbs;
 OrbNode front;
+FixedOrb sim5Earth;
 
 void setup() {
   size(600,600);
@@ -53,7 +54,8 @@ public void displayMode() {
   //println("ran method");
   if (toggles!=null) {
     textAlign(LEFT, TOP);
-    textSize(20);
+    if (currentSim!=5) {textSize(20);}
+    else {textSize(12);}
     noStroke();
     int spacing = 85;
     int x = 0;
@@ -122,6 +124,17 @@ void keyPressed() {
     if (key=='m') {toggles[2]=!toggles[2];} // magnetics
     if (key=='g') {toggles[3]=!toggles[3];} // earth gravity
   }
+  if (currentSim==5) {
+    if (key=='r') {boolean[] temp=toggles;setup5();toggles=temp;}
+    if (key==' ') {toggles[0] = !toggles[0];} // moving
+    if (key=='=') {addNewOrb();} // add new orb
+    if (key=='-') {removeOrb();} // remove orb
+    if (key=='b') {toggles[1]=!toggles[1];} // bounces
+    if (key=='g') {toggles[5]=!toggles[5];} // earth gravity
+    if (key=='d') {toggles[2] = !toggles[2];} // drag
+    if (key=='a') {toggles[3] = !toggles[3];} // attraction
+    if (key=='s') {toggles[4] = !toggles[4];} // springs
+  }
 }
 
 // setups
@@ -183,6 +196,18 @@ void setup4() {
 
 void setup5() {
   currentSim=5;
+  front = new OrbNode();
+  int rA = (int)random(15) + 5;
+  for (int i=0;i<rA;i++) {addNewOrbNode();}
+  orbs = null;
+  sim5Earth = new FixedOrb();
+  String[] tempModes = {"Moving( )","Bounce(b)","Drag(d)","Attraction(a)","Springs(s)","Gravity(g)","Add new(=)","One less(-)"};
+  modes = tempModes;
+  toggles = new boolean[tempModes.length];
+  toggles[1] = true; // bounce
+  toggles[2] = true;
+  toggles[4] = true;
+  toggles[5] = true;
 }
 
 // draws
