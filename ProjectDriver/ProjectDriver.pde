@@ -11,9 +11,11 @@ final float DRAG_CONSTANT_1 = 1;
 final float DRAG_CONSTANT_2 = DRAG_CONSTANT_1*5;
 final float EARTH_GRAVITY_CONSTANT = 10;
 final float ABS_CHARGE = 100;
+// static vars
 boolean[] toggles;
 String[] modes;
 int currentSim;
+boolean seeVarValues;
 // orbs
 Orb[] orbs;
 OrbNode front;
@@ -70,6 +72,8 @@ public void displayMode() {
       x+= w+5;
     }
   }
+  stroke(0);
+  text("sim:" + currentSim + "/5",width/15,height/15);
 }
 
 void keyPressed() {
