@@ -79,19 +79,19 @@ The spring simulation will depend on the length of the spring between the orb an
 ### Simulation 3: Drag
 Describe what your drag simulation will look like. Explain how it will be setup, and how it should behave while running.
 
-The drag simulation will look like
+The drag simulation will have different sections which will affect the strength of the force on the orbs depending on which section it is in. 
 
 --- 
 
 ### Simulation 4: Custom force
 Describe what your Custom force simulation will look like. Explain how it will be setup, and how it should behave while running.
 
-YOUR ANSWER HERE
+Our custom force has orbs displayed with negative or positive on it to demonstrate the charge. It will be setup with a random amount of orbs with different charges to demonstrate the force. It should repel if the charges are the same. If there is a different charge, it should have an attraction towards each other based on distance and other factors.
 
 --- 
 
 ### Simulation 5: Combination
 Describe what your combination simulation will look like. Explain how it will be setup, and how it should behave while running.
 
-YOUR ANSWER HERE
+Demonstrates all the simulations together Combination of all the simulations into one.
 
