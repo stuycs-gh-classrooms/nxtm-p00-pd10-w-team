@@ -32,24 +32,23 @@ All projects will require the following:
 What is the formula for your force? Including descriptions/definitions for the symbols. (You may include a picture of the formula if it is not easily typed.)
 
 
-F = qvBsin(x): 
-x = angle between velocity and magnetic field
-B = magnitude of the magnetic field
-v = magnitude of the velocity 
-q = magnitude of the charge
+F = (kq1q2)/r^2
+k = Coulomb constant
+q = charge
+r = distance
 
 ### Custom Force
 - What information that is already present in the `Orb` or `OrbNode` classes does this force use?
   - It uses attraction for the magnetic field and moving for the velocity.
 
 - Does this force require any new constants, if so what are they and what values will you try initially?
-  - Yes it requires a magnetic field, velocity, and charge constant. 
+  - Yes it requires a coulomb constant, distance between the two orbs, and charge constant. 
 
 - Does this force require any new information to be added to the `Orb` class? If so, what is it and what data type will you use?
-  - Magnitude of charge will need to be added. This is for the magnetism. We'll decide what data type it is later on.
+  - Magnitude of charge will need to be added. This is for the magnetism. It is a float.
 
 - Does this force interact with other `Orbs`, or is it applied based on the environment?
-  - It interacts with other orbs as the magnetism is between one object and another.
+  - It interacts with other orbs as the magnetism is between one object and another based on the charge of the orbs interacting. 
 
 https://github.com/stuycs-gh-classrooms/nxtm-p00-pd09-chayhana
 https://github.com/stuycs-gh-classrooms/nxtm-p00-pd09-duuuuh4444

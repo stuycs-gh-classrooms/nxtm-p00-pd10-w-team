@@ -165,7 +165,7 @@ class Orb {
     return new PVector(0, earthConstant);
   }
 
-  PVector getMagneticForce(Orb other) {
+  PVector getOldMagneticForce(Orb other) {
     float dx = other.center.x - center.x;
     float dy = other.center.y - center.y;
     float rSquared = ((dx * dx) + (dy * dy));
@@ -182,4 +182,33 @@ class Orb {
       return new PVector(forceX,forceY);
     }
   }
+  
+  // even less real magnetic force, uses disney physics to make it more visually appealing to viewer
+  
+  PVector getMagneticForce(Orb other) {
+    float dx = other.center.x - center.x;
+    float dy = other.center.y - center.y;
+    float rSquared = ((dx * dx) + (dy * dy));
+    if (rSquared == 0) {
+      return new PVector(0, 0);
+    }
+    float r = sqrt(rSquared);
+    float forceMagnitude = (/*k*/1) * abs(charge) * abs(other.charge) / rSquared;
+    float forceX = forceMagnitude * dx / r;
+    float forceY = forceMagnitude * dy / r;
+    if (center.dist(other.center)<bsize) {
+      //forceX = forceX * (center.dist(other.center) / tempHighPassFilterDist);
+      //forceY = forceY * (center.dist(other.center) / tempHighPassFilterDist);
+      //velocity.mult(-1);
+      //other.velocity.mult(-1);
+      forceX*=0.01;
+      forceY*=0.01;
+    }
+    if ((charge>0&&other.charge>0)||(charge<0&&other.charge<0)) {
+      return new PVector(-forceX,-forceY);
+    } else {
+      return new PVector(forceX,forceY);
+    }
+  }
+  
 }//Orb
